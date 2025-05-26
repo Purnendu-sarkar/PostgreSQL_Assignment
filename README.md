@@ -31,3 +31,28 @@ CREATE TABLE wildlife.rangers (
 );
 ```
 এই স্কিমা আমাদের টেবিলগুলোকে গ্রুপ করে রাখে এবং অন্য প্রজেক্টের টেবিলের সাথে নামের কনফ্লিক্ট এড়ায়। এটা নিরাপত্তার জন্যও কাজে লাগে, কারণ আমরা নির্দিষ্ট ইউজারদের শুধু wildlife স্কিমায় অ্যাক্সেস দিতে পারি।
+
+## 3. Explain the Primary Key and Foreign Key concepts in PostgreSQL. 
+
+### Primary Key:
+এটা একটা টেবিলের কলাম বা কলামের সেট, যেটা প্রতিটি রেকর্ডকে ইউনিকভাবে চিহ্নিত করে। এটা **NOT NULL** এবং **UNIQUE** হতে হয়। আমার কাছে এটা একটা টেবিলের আইডেন্টিটি কার্ডের মতো, যেটা নিশ্চিত করে কোনো রেকর্ড ডুপ্লিকেট হবে না। PostgreSQL এটা অটোমেটিক ইনডেক্স তৈরি করে, যাতে ডাটা দ্রুত খুঁজে পাওয়া যায়।
+### Foreign Key: 
+এটা একটা টেবিলের কলাম, যেটা অন্য টেবিলের প্রাইমারি কী বা **UNIQUE** কী-এর সাথে লিঙ্ক করে। আমি এটাকে দুটো টেবিলের মধ্যে একটা সেতু মনে করি, যেটা ডাটার রেফারেন্সিয়াল অখণ্ডতা রক্ষা করে।
+
+**উদাহরণ:**
+
+অ্যাসাইনমেন্টে `rangers` টেবিলে `ranger_id` প্রাইমারি কী:
+```sql
+CREATE TABLE rangers (
+    ranger_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL
+);
+```
+অ্যাসাইনমেন্টে `sightings` টেবিলে `ranger_id` ফরেন কী:
+```sql
+CREATE TABLE sightings (
+    sighting_id SERIAL PRIMARY KEY,
+    ranger_id INTEGER NOT NULL REFERENCES rangers(ranger_id) ON DELETE CASCADE
+);
+```
+এখানে `ON DELETE CASCADE` নিশ্চিত করে যে, যদি কোনো রেঞ্জার ডিলিট হয়, তাদের দর্শনও ডিলিট হবে। এটা ডাটার সঠিকতা বজায় রাখে।
