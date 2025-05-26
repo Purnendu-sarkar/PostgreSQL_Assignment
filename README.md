@@ -140,3 +140,27 @@ JOIN sightings s ON r.ranger_id = s.ranger_id
 JOIN species sp ON s.species_id = sp.species_id;
 ```
 এখানে `INNER JOIN` দিয়ে আমরা তিনটি টেবিলের ডাটা একসাথে এনেছি। `ON` ক্লজে ফরেন কী ব্যবহার করে সম্পর্ক তৈরি করা হয়েছে। `LEFT JOIN` ব্যবহার করলে এমন রেঞ্জারদেরও দেখাবে যাদের কোনো দর্শন নেই।
+
+
+## 10. How can you calculate aggregate functions like COUNT(), SUM(), and AVG() in PostgreSQL?
+
+অ্যাগ্রিগেট ফাংশনগুলো একটা ডাটা সেটের উপর গণনা করে একটা একক মান ফিরিয়ে আনে। আমার কাছে এগুলো ডাটা সামারাইজ করার জন্য খুবই কাজের, কারণ এগুলো দিয়ে আমরা ডাটার সংক্ষিপ্ত বিশ্লেষণ পেতে পারি। PostgreSQL-এ কিছু জনপ্রিয় অ্যাগ্রিগেট ফাংশন হলো:
+
+**COUNT()**: রেকর্ডের সংখ্যা গণনা করে।
+
+**SUM()**: নিউমেরিক কলামের মানের যোগফল বের করে।
+
+**AVG()**: নিউমেরিক কলামের গড় বের করে।
+
+**উদাহরণ:**
+
+ধরা যাক, আমরা প্রতিটি প্রজাতির দর্শন সংখ্যা এবং তাদের গড় দর্শন সময় জানতে চাই:
+```sql
+SELECT sp.common_name, 
+       COUNT(s.sighting_id) AS sighting_count,
+       AVG(EXTRACT(EPOCH FROM s.sighting_time)) AS avg_sighting_time
+FROM species sp
+LEFT JOIN sightings s ON sp.species_id = s.species_id
+GROUP BY sp.common_name;
+```
+এখানে `COUNT` দর্শনের সংখ্যা গণনা করে, আর `AVG` দিয়ে আমরা দর্শনের সময়ের গড় বের করেছি। `EXTRACT(EPOCH FROM ...)` সময়কে সেকেন্ডে কনভার্ট করে গড় গণনা করতে সাহায্য করে। এই ফাংশনগুলো ডাটা অ্যানালিটিক্সে খুবই গুরুত্বপূর্ণ।
