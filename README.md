@@ -124,3 +124,19 @@ SET conservation_status = 'Historic'
 WHERE discovery_date < '1800-01-01';
 ```
 এখানে `SET` ক্লজ নতুন মান সেট করে, আর `WHERE` ক্লজ নিশ্চিত করে শুধু নির্দিষ্ট রেকর্ড আপডেট হবে। যদি `WHERE` না ব্যবহার করি, তবে পুরো টেবিল আপডেট হয়ে যাবে, তাই সাবধানে ব্যবহার করতে হয়।
+
+
+## 8. What is the significance of the **JOIN** operation, and how does it work in PostgreSQL?
+
+`JOIN` অপারেশন দিয়ে আমরা দুই বা ততোধিক টেবিল থেকে সম্পর্কিত ডাটা একসাথে আনতে পারি। আমার মতে, এটা ডাটাবেসের সবচেয়ে কাজের ফিচারগুলোর একটা, কারণ এটা দিয়ে আমরা টেবিলগুলোর মধ্যে সম্পর্ক ব্যবহার করে জটিল তথ্য বের করতে পারি। PostgreSQL-এ বিভিন্ন ধরনের জয়েন আছে: `INNER JOIN`, `LEFT JOIN`, `RIGHT JOIN`, `FULL JOIN`।
+
+**উদাহরণ:**
+
+আমাদের অ্যাসাইনমেন্টে আমরা rangers এবং তাদের দর্শনের তথ্য একসাথে দেখতে চাই:
+```sql
+SELECT r.name, s.sighting_time, sp.common_name
+FROM rangers r
+JOIN sightings s ON r.ranger_id = s.ranger_id
+JOIN species sp ON s.species_id = sp.species_id;
+```
+এখানে `INNER JOIN` দিয়ে আমরা তিনটি টেবিলের ডাটা একসাথে এনেছি। `ON` ক্লজে ফরেন কী ব্যবহার করে সম্পর্ক তৈরি করা হয়েছে। `LEFT JOIN` ব্যবহার করলে এমন রেঞ্জারদেরও দেখাবে যাদের কোনো দর্শন নেই।
