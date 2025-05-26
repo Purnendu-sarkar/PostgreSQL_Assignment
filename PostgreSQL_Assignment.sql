@@ -32,6 +32,20 @@ CREATE TABLE sightings (
     notes TEXT
 );
 
+
+-- Uncomment the following lines to clear existing data
+--DELETE FROM sightings;
+--DELETE FROM species;
+--DELETE FROM rangers;
+
+-- Uncomment the following lines to drop tables if they exist
+--DROP TABLE rangers;
+--DROP TABLE species;
+--DROP TABLE sightings;
+
+
+
+
 -- Insert data into rangers
 INSERT INTO
     rangers (name, region)
@@ -44,6 +58,9 @@ VALUES (
         'Carol King',
         'Mountain Range'
     );
+
+-- Select all rangers
+SELECT * FROM rangers;
 
 -- Insert data into species
 INSERT INTO
@@ -77,6 +94,9 @@ VALUES (
         '1758-01-01',
         'Endangered'
     );
+
+-- Select all species
+SELECT * FROM species;
 
 -- Insert data into sightings
 INSERT INTO
@@ -115,6 +135,9 @@ VALUES (
         '2024-05-18 18:30:00',
         NULL
     );
+
+-- Select all sightings
+SELECT * FROM sightings;
 
 -- Problem 1: Register a new ranger
 INSERT INTO
