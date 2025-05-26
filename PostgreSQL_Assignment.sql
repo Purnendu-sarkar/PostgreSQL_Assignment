@@ -124,3 +124,15 @@ VALUES ('Derek Fox', 'Coastal Plains');
 -- Problem 2: Count unique species ever sighted
 SELECT COUNT(DISTINCT species_id) AS unique_species_count
 FROM sightings;
+
+-- Problem 3: Find all sightings where the location includes "Pass"
+SELECT
+    sighting_id,
+    species_id,
+    ranger_id,
+    location,
+    sighting_time,
+    notes
+FROM sightings
+WHERE
+    location LIKE '%Pass%';
